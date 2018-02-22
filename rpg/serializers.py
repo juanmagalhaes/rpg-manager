@@ -22,8 +22,31 @@ class GameSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'sumary', 'created_at')
 
 class CharacterSerializer(serializers.ModelSerializer):
-    items = ItemSerializer(many=True, read_only=True)
-    abilities = AbilitySerializer(many=True, read_only=True)
+    items = ItemSerializer(many=True)
+    abilities = AbilitySerializer(many=True)
+
+    def create(self, validated_data):
+        items_data = validated_data.pop('items')
+        abilities_data = validated_data.pop('abilities')
+        character = Character.objects.create(**validated_data)
+
+        for item_data in items_data:
+            Item.objects.create(character=character, **item_data)
+
+        for ability_data in abilities_data:
+            Ability.objects.create(character=character, **ability_data)
+
+        return character
+
+    def update(self, instance, validated_data):
+        items_data = validated_data.pop('items')
+        abilities_data = validated_data.pop('abilities')
+
+        for k, v in validated_data.items():
+            setattr(instance, k, v if v else getattr(instance, k))
+
+        instance.save()
+        return instance
 
     class Meta:
         model = Character
