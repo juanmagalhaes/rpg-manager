@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'new_account.apps.NewAccountConfig',
+    'rpg.apps.RpgConfig',
 ]
 
 REST_FRAMEWORK = {
