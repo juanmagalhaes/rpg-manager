@@ -42,11 +42,16 @@ INSTALLED_APPS = [
     'rpg.apps.RpgConfig',
 ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-    )
-}
+browsable_api = os.environ.get('BROWSABLE_API', False) == 'True'
+if not browsable_api:
+    REST_FRAMEWORK = {
+        'DEFAULT_RENDERER_CLASSES': (
+            'rest_framework.renderers.JSONRenderer',
+        ),
+        'DEFAULT_PARSER_CLASSES': (
+            'rest_framework.parsers.JSONParser',
+        )
+    }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
