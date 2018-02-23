@@ -21,7 +21,7 @@ class Character(models.Model):
     player = models.CharField(max_length=100)
     age = models.IntegerField()
     race = models.CharField(max_length=100)
-    class_name = models.CharField('class', max_length=100)
+    class_name = models.CharField(max_length=100)
     level = models.IntegerField()
     health_points = models.IntegerField()
     magic_points = models.IntegerField()

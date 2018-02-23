@@ -38,6 +38,7 @@ class CharacterListSerializer(serializers.ListSerializer):
             }
         return list(map(mapper, Game.objects.all()))
 
+
 class CharacterSerializer(serializers.ModelSerializer):
     items = ItemSerializer(many=True, required=False)
     abilities = AbilitySerializer(many=True, required=False)
@@ -105,6 +106,4 @@ class CharacterSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
-
-CharacterSerializer._declared_fields["class"] = serializers.CharField(source="class_name")
 
