@@ -1,0 +1,79 @@
+{
+    "game": 7,
+    "name": "Test",
+    "player": "test",
+    "age": 10,
+    "race": "test",
+    "level": 1,
+    "class": "test",
+    "health_points": 1,
+    "magic_points": 1,
+    "items": [{
+      "id": 11,
+      "name": "altered test",
+      "description": "test"
+    }, {
+      "name": "inserted test",
+      "description": "test"
+    }],
+    "abilities": [{
+      "name": "test",
+      "description": "test"
+    }]
+}
+
+{
+    "id": 14,
+    "game": 7,
+    "name": "Test",
+    "player": "test",
+    "age": 10,
+    "race": "test",
+    "level": 1,
+    "class": "test",
+    "health_points": 1,
+    "magic_points": 1,
+    "items": [{
+      "id": 3,
+      "name": "test",
+      "description": "test"
+    }, {
+      "name": "test new",
+      "description": "test"
+    }],
+    "abilities": [{
+      "id": 3,
+      "name": "test",
+      "description": "test2"
+    }]
+}
+
+{
+    "id": 17,
+    "game": 7,
+    "name": "Test",
+    "player": "test",
+    "age": 10,
+    "race": "test",
+    "level": 1,
+    "class": "test",
+    "health_points": 1,
+    "magic_points": 1,
+    "items": [
+        {
+            "name": "new item 2",
+            "description": "new item"
+        },
+        {
+            "name": "new item 3",
+            "description": "new item"
+        },
+        {
+            "id": 24,
+            "name": "alterd item 20",
+            "description": "altered item"
+        }
+    ],
+    "abilities": []
+}
+
