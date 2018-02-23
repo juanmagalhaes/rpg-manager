@@ -15,7 +15,7 @@ class Character(models.Model):
     game = models.ForeignKey(
         Game,
         on_delete=models.CASCADE,
-        related_name='characters'
+        related_name='game'
     )
     name = models.CharField(max_length=100)
     player = models.CharField(max_length=100)

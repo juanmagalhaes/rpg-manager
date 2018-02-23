@@ -28,10 +28,24 @@ class GameSerializer(serializers.ModelSerializer):
         model = Game
         fields = ('id', 'name', 'sumary', 'created_at')
 
-class CharacterSerializer(serializers.ModelSerializer):
-    items = ItemSerializer(many=True)
-    abilities = AbilitySerializer(many=True)
+class CharacterListSerializer(serializers.ListSerializer):
+    def to_representation(self, data):
+        def mapper(game):
+            return {
+                'characters': Character.objects.filter(game=game).values(),
+                'game_name': game.name,
+                'game_id': game.id,
+            }
+        return list(map(mapper, Game.objects.all()))
 
+class CharacterSerializer(serializers.ModelSerializer):
+    items = ItemSerializer(many=True, required=False)
+    abilities = AbilitySerializer(many=True, required=False)
+
+    class Meta:
+        model = Character
+        list_serializer_class = CharacterListSerializer
+        fields = ('__all__')
 
     @transaction.atomic
     def create(self, validated_data):
@@ -91,23 +105,6 @@ class CharacterSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
-
-    class Meta:
-        model = Character
-        fields = (
-            'id',
-            'game',
-            'name',
-            'player',
-            'age',
-            'race',
-            'level',
-            'class',
-            'health_points',
-            'magic_points',
-            'items',
-            'abilities',
-        )
 
 CharacterSerializer._declared_fields["class"] = serializers.CharField(source="class_name")
 
