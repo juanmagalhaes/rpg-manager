@@ -49,7 +49,7 @@
 }
 
 {
-    "id": 17,
+    "id": 18,
     "game": 7,
     "name": "Test",
     "player": "test",
@@ -60,20 +60,17 @@
     "health_points": 1,
     "magic_points": 1,
     "items": [
-        {
-            "name": "new item 2",
-            "description": "new item"
-        },
-        {
-            "name": "new item 3",
-            "description": "new item"
-        },
-        {
-            "id": 24,
-            "name": "alterd item 20",
-            "description": "altered item"
-        }
     ],
-    "abilities": []
+    "abilities": [
+        {
+            "id": 7,
+            "name": "altered first ability",
+            "description": "altered first ability"
+        },
+        {
+            "name": "new ability",
+            "description": "new ability"
+        }
+    ]
 }
 

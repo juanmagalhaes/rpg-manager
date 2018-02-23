@@ -12,11 +12,13 @@ def map_to_related_model(character, Entity, data):
         Entity(character=character, **x), data))
 
 class ItemSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
     class Meta:
         model = Item
         fields = ('id', 'name', 'description')
 
 class AbilitySerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
     class Meta:
         model = Ability
         fields = ('id', 'name', 'description')
@@ -33,8 +35,8 @@ class CharacterSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        items_data = validated_data.pop('items')
-        abilities_data = validated_data.pop('abilities')
+        items_data = validated_data.pop('items', [])
+        abilities_data = validated_data.pop('abilities', [])
         character = Character.objects.create(**validated_data)
         character.items.bulk_create(map_to_related_model(
             character,
@@ -50,11 +52,6 @@ class CharacterSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        # XXX update all character properties
-        instance.save()
-
-        import pdb; pdb.set_trace()
-
         def create_new_nested_models(nested_set, collection):
             new_nested_models = list(filter(lambda x: not x.id, collection))
             nested_set.bulk_create(new_nested_models)
@@ -69,7 +66,7 @@ class CharacterSerializer(serializers.ModelSerializer):
             old_nested_models = list(map(lambda x: x.id, collection))
             nested_set.exclude(id__in=old_nested_models).delete()
 
-        items_data = validated_data.pop('items')
+        items_data = validated_data.pop('items', [])
         item_collection = map_to_related_model(
             instance,
             Item,
@@ -79,7 +76,7 @@ class CharacterSerializer(serializers.ModelSerializer):
         update_existing_nested_models(instance.items, item_collection)
         delete_old_nested_models(instance.items, item_collection)
 
-        abilities = validated_data.pop('abilities')
+        abilities = validated_data.pop('abilities', [])
         ability_collection = map_to_related_model(
             instance,
             Ability,
@@ -89,6 +86,10 @@ class CharacterSerializer(serializers.ModelSerializer):
         update_existing_nested_models(instance.abilities, ability_collection)
         delete_old_nested_models(instance.abilities, ability_collection)
 
+        for k, v in validated_data.items():
+            setattr(instance, k, v)
+
+        instance.save()
         return instance
 
     class Meta:
