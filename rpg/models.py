@@ -12,9 +12,10 @@ class Game(models.Model):
         ordering = ('created_at',)
 
 class Character(models.Model):
-    game = models.OneToOneField(
+    game = models.ForeignKey(
         Game,
         on_delete=models.CASCADE,
+        related_name='characters'
     )
     name = models.CharField(max_length=100)
     player = models.CharField(max_length=100)
@@ -40,7 +41,8 @@ class Item(models.Model):
     description = models.CharField(max_length=100)
     character = models.ForeignKey(
         Character,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='items'
     )
 
     def __str__(self):
@@ -54,7 +56,8 @@ class Ability(models.Model):
     description = models.CharField(max_length=100)
     character = models.ForeignKey(
         Character,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='abilities'
     )
 
     def __str__(self):
