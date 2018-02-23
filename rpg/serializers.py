@@ -32,7 +32,7 @@ class CharacterListSerializer(serializers.ListSerializer):
     def to_representation(self, data):
         def mapper(game):
             return {
-                'characters': Character.objects.filter(game=game).values(),
+                'characters': data.filter(game=game).values(),
                 'game_name': game.name,
                 'game_id': game.id,
             }
