@@ -52,9 +52,9 @@ jobs:
           name: Deploy Master to Heroku
           command: |
             git push --force git@heroku.com:$HEROKU_APP_NAME.git HEAD:refs/heads/master
-            heroku run -a $HEROKU_APP_NAME python manage.py migrate
+            heroku run -a $HEROKU_RPG_MANAGER_APP_NAME python manage.py migrate
             sleep 5  # sleep for 5 seconds to wait for dynos
-            heroku restart
+            heroku restart -a $HEROKU_RPG_MANAGER_APP_NAME
 
 workflows:
   version: 2
