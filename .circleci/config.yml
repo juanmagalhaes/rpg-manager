@@ -35,35 +35,34 @@ jobs:
       - store_artifacts:
           path: test-results
           destination: tr1
-  deploy:
-    machine:
-        enabled: true
-    working_directory: ~/rpg-manager
-    environment:
-      HEROKU_APP: "rpg-manager"
+  deploy-job:
+    docker:
+      - image: circleci/python:3.6.3
+    working_directory: /rpg-manager
     steps:
       - checkout
       - run:
-          name: Setup Heroku
+          name: Run setup script
           command: bash .circleci/setup-heroku.sh
-
+      - add_ssh_keys:
+          fingerprints:
+            - "fd:95:8f:6f:7f:2c:bf:ef:ed:3b:66:32:46:70:f5:5c:9b:22:7c:7f"
       - run:
+          name: Deploy Master to Heroku
           command: |
-            git push heroku sequential-branch-filter:feature/dev_ops_config
-            heroku run ./manage.py makemigrations
-            heroku run ./manage.py migrate
-            sleep 5  # sleep for 5 seconds to wait for dynos
+            git push --force git@heroku.com:$HEROKU_APP_NAME.git HEAD:refs/heads/master
+            heroku run python manage.py migrate
             heroku restart
 
-workflows:
-  version: 2
-  build-and-deploy:
-    jobs:
-      - build
-      - deploy:
-          requires:
-            - build
-          filters:
-            branches:
-              only: sequential-branch-filter
+ workflows:
+   version: 2
+   build-deploy:
+     jobs:
+       - build-job
+       - deploy-job:
+           requires:
+             - build-job
+           filters:
+             branches:
+               only: feature/dev_ops_config
 
