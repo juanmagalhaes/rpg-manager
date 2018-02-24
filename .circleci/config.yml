@@ -35,10 +35,35 @@ jobs:
       - store_artifacts:
           path: test-results
           destination: tr1
+  deploy:
+    machine:
+        enabled: true
+    working_directory: ~/rpg-manager
+    environment:
+      HEROKU_APP: "rpg-manager"
+    steps:
+      - checkout
+      - run:
+          name: Setup Heroku
+          command: bash .circleci/setup-heroku.sh
 
-deployment:
-  production:
-    branch: feature/dev_ops_config
-    heroku:
-      appname: rpg-manager
+      - run:
+          command: |
+            git push heroku sequential-branch-filter:feature/dev_ops_config
+            heroku run ./manage.py makemigrations
+            heroku run ./manage.py migrate
+            sleep 5  # sleep for 5 seconds to wait for dynos
+            heroku restart
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: sequential-branch-filter
 
