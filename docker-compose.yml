@@ -1,0 +1,38 @@
+version: '3'
+services:
+  web:
+    restart: always
+    build: .
+    image: juanmagalhaes/rpg_manager:latest
+    container_name: dg01
+    volumes:
+      - .:/src
+    command: bash -c "
+        ./scripts/wait-for-it.sh db:5432
+        && ./manage.py makemigrations
+        && ./manage.py migrate
+        && ./manage.py create_superuser_with_password
+          --username ${ADMIN_USER}
+          --email ${ADMIN_EMAIL}
+          --password ${ADMIN_PASSWORD}
+          --noinput
+          --preserve
+        && [ ${ENV} == 'production' ] && gunicorn core.wsgi -b 0.0.0.0:8000
+        || ./manage.py runserver 0.0.0.0:8000
+      "
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_HOST=db
+  db:
+    restart: always
+    build: ./db
+    image: juanmagalhaes/rpg_manager_db:latest
+    container_name: ps01
+    ports:
+      - "5432:5432"
+    volumes:
+      - ${PG_DATA}:/var/lib/postgresql/data
+
