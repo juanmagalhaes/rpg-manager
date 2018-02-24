@@ -35,7 +35,8 @@ jobs:
       - store_artifacts:
           path: test-results
           destination: tr1
-  deploy-job:
+
+  deploy:
     docker:
       - image: circleci/python:3.6.3
     working_directory: /rpg-manager
@@ -58,10 +59,10 @@ jobs:
    version: 2
    build-deploy:
      jobs:
-       - build-job
-       - deploy-job:
+       - build
+       - deploy:
            requires:
-             - build-job
+             - build
            filters:
              branches:
                only: feature/dev_ops_config
