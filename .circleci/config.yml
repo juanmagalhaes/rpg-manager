@@ -66,5 +66,5 @@ workflows:
             - build
           filters:
             branches:
-              only: master
+              only: feature/dev_ops_config
 
