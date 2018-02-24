@@ -1,0 +1,23 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[requires]
+python_version = '3.6.3'
+
+[packages]
+
+certifi = "*"
+chardet = "*"
+Django = "*"
+django-cors-headers = "*"
+djangorestframework = "*"
+gunicorn = "*"
+idna = "*"
+psycopg2-binary = "*"
+pytz = "*"
+urllib3 = "*"
+unittest-xml-reporting = "*"
+
