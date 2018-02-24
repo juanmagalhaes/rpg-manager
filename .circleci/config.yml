@@ -39,7 +39,7 @@ jobs:
   deploy:
     docker:
       - image: circleci/python:3.6.3
-    working_directory: /rpg-manager
+    working_directory: ~/rpg-manager
     steps:
       - checkout
       - run:
@@ -53,6 +53,7 @@ jobs:
           command: |
             git push --force git@heroku.com:$HEROKU_APP_NAME.git HEAD:refs/heads/master
             heroku run python manage.py migrate
+            sleep 5  # sleep for 5 seconds to wait for dynos
             heroku restart
 
  workflows:
