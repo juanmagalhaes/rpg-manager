@@ -42,6 +42,8 @@ jobs:
     working_directory: ~/rpg-manager
     steps:
       - checkout
+
+      - run: echo 'fd:95:8f:6f:7f:2c:bf:ef:ed:3b:66:32:46:70:f5:5c:9b:22:7c:7f' >> ~/.ssh/known_hosts
       - run:
           name: Run setup script
           command: bash .circleci/setup-heroku.sh
