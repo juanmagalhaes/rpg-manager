@@ -1,0 +1,7 @@
+.env
+.git
+.editorconfig
+.gitignore
+.circleci
+
+db

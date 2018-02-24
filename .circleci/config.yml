@@ -1,0 +1,70 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/rpg-manager
+    docker:
+      - image: circleci/python:3.6.3
+        environment:
+          PIPENV_VENV_IN_PROJECT: true
+          DATABASE_URL: postgresql://root@localhost/circle_test?sslmode=disable
+      - image: circleci/postgres:10.1-alpine
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: circle_test
+    steps:
+      - checkout
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
+      - restore_cache:
+          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+      - run:
+          command: |
+            sudo pip install pipenv
+            pipenv install
+      - save_cache:
+          key: deps9-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          paths:
+            - ".venv"
+            - "/usr/local/bin"
+            - "/usr/local/lib/python3.6/site-packages"
+      - run:
+          command: |
+            pipenv run "python manage.py test"
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results
+          destination: tr1
+
+  deploy:
+    docker:
+      - image: circleci/python:3.6.3
+    working_directory: ~/rpg-manager
+    steps:
+      - checkout
+      - run:
+          name: Run setup script
+          command: bash .circleci/setup-heroku.sh
+      - add_ssh_keys:
+          fingerprints:
+            - "b4:7c:86:c4:e0:82:04:82:d6:f1:36:9a:c5:b9:b4:78"
+      - run:
+          name: Deploy Master to Heroku
+          command: |
+            git push --force git@heroku.com:$HEROKU_RPG_MANAGER_APP_NAME.git HEAD:refs/heads/master
+            heroku run -a $HEROKU_RPG_MANAGER_APP_NAME python manage.py migrate
+            sleep 5  # sleep for 5 seconds to wait for dynos
+            heroku restart -a $HEROKU_RPG_MANAGER_APP_NAME
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+
