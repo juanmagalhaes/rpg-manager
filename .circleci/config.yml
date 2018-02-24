@@ -35,8 +35,10 @@ jobs:
       - store_artifacts:
           path: test-results
           destination: tr1
-  deployment:
-    production:
-      branch: feature/dev_ops_config
-      heroku:
-        appname: rpg-manager
+
+deployment:
+  production:
+    branch: feature/dev_ops_config
+    heroku:
+      appname: rpg-manager
+
