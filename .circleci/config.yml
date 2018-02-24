@@ -51,7 +51,7 @@ jobs:
       - run:
           name: Deploy Master to Heroku
           command: |
-            git push --force git@heroku.com:$HEROKU_APP_NAME.git HEAD:refs/heads/master
+            git push heroku sequential-branch-filter:feature/dev_ops_config
             heroku run python manage.py migrate
             sleep 5  # sleep for 5 seconds to wait for dynos
             heroku restart
@@ -66,5 +66,5 @@ jobs:
              - build
            filters:
              branches:
-               only: feature/dev_ops_config
+               only: sequential-branch-filter
 
