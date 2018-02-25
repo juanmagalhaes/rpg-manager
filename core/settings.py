@@ -47,10 +47,10 @@ browsable_api = os.environ.get('BROWSABLE_API', False) == 'True'
 if not browsable_api:
     REST_FRAMEWORK = {
         'DEFAULT_RENDERER_CLASSES': (
-            'rest_framework.renderers.JSONRenderer',
+            'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
         ),
         'DEFAULT_PARSER_CLASSES': (
-            'rest_framework.parsers.JSONParser',
+            'djangorestframework_camel_case.parser.CamelCaseJSONParser',
         )
     }
 

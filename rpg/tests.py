@@ -1,3 +1,4 @@
+from djangorestframework_camel_case.util import underscoreize
 from django.test import TestCase
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient
@@ -245,7 +246,7 @@ class CharacterTestCase(TestCase):
                 game= games[count % 2].id,
             )
 
-        grouped_collection = self._get().data
+        grouped_collection = underscoreize(self._get().data)
         self.assertEqual(grouped_collection[0]['game_name'], 'Game 1')
         self.assertEqual(grouped_collection[0]['game_id'], game1.id)
         self.assertEqual(grouped_collection[0]['characters'][0]['name'], 'test_0')

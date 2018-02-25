@@ -1,3 +1,4 @@
+from djangorestframework_camel_case.util import camelize
 from rest_framework import serializers
 from django.db import transaction
 from .models import (
@@ -32,7 +33,7 @@ class CharacterListSerializer(serializers.ListSerializer):
     def to_representation(self, data):
         def mapper(game):
             return {
-                'characters': data.filter(game=game).values(),
+                'characters': camelize([*data.filter(game=game).values()]),
                 'game_name': game.name,
                 'game_id': game.id,
             }
