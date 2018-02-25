@@ -20,6 +20,7 @@ class Character(models.Model):
     name = models.CharField(max_length=100)
     player = models.CharField(max_length=100)
     age = models.IntegerField()
+    avatar = models.URLField(blank=True, default='')
     race = models.CharField(max_length=100)
     class_name = models.CharField(max_length=100)
     level = models.IntegerField()
