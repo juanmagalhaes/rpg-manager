@@ -34,6 +34,7 @@ class CharacterListSerializer(serializers.ListSerializer):
         def mapper(game):
             return {
                 'characters': camelize([*data.filter(game=game).values()]),
+                'game_sumary': game.sumary,
                 'game_name': game.name,
                 'game_id': game.id,
             }
