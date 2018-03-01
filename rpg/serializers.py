@@ -31,6 +31,10 @@ class GameSerializer(serializers.ModelSerializer):
 
 class CharacterListSerializer(serializers.ListSerializer):
     def to_representation(self, data):
+        gameId = self.context['request'].query_params.get('gameId', None)
+        if gameId is not None:
+            data = data.filter(game__id=gameId)
+
         def mapper(game):
             return {
                 'characters': camelize([*data.filter(game=game).values()]),
@@ -38,7 +42,12 @@ class CharacterListSerializer(serializers.ListSerializer):
                 'game_name': game.name,
                 'game_id': game.id,
             }
-        return list(map(mapper, Game.objects.all()))
+
+        queryset = Game.objects.all()
+        if gameId is not None:
+            queryset = queryset.filter(id=gameId)
+
+        return list(map(mapper, queryset))
 
 
 class CharacterSerializer(serializers.ModelSerializer):
