@@ -23,7 +23,7 @@ class Character(models.Model):
     age = models.IntegerField()
     avatar = models.URLField(blank=True, default='', max_length=400)
     race = models.CharField(max_length=100)
-    class_name = models.CharField(max_length=100)
+    character_class = models.CharField(max_length=100)
     level = models.IntegerField()
     health_points = models.IntegerField()
     magic_points = models.IntegerField()
@@ -31,7 +31,7 @@ class Character(models.Model):
     def __str__(self):
         return u"{} , {} - LV: {}".format(
             self.name,
-            self.class_name,
+            self.character_class,
             self.level
         )
 

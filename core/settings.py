@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '0i4lnhro)i()2m!tzale)7of-!^=ak-8l-(wstq-*xbpc!v3k4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', True),
+DEBUG = os.environ.get('DEBUG', False),
 
 ALLOWED_HOSTS = ['localhost', 'rpg-manager.herokuapp.com']
 

@@ -64,7 +64,7 @@ class CharacterTestCase(TestCase):
         self.assertEqual(character.level, data.get('level'))
         self.assertEqual(character.game.id, data.get('game'))
         self.assertEqual(character.player, data.get('player'))
-        self.assertEqual(character.class_name, data.get('class_name'))
+        self.assertEqual(character.character_class, data.get('character_class'))
         self.assertEqual(character.magic_points, data.get('magic_points'))
         self.assertEqual(character.health_points, data.get('health_points'))
         self.assertEqual(character.items.count(), data.get('items').__len__())
@@ -138,7 +138,7 @@ class CharacterTestCase(TestCase):
             'race': 'Orc',
             'game': game.id,
             'age': 35,
-            'class_name': 'Barbarian',
+            'character_class': 'Barbarian',
             'level': 15,
             'health_points': 200,
             'magic_points': 0,
