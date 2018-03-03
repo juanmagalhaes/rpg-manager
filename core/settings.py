@@ -65,6 +65,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True # Test production problems with cors
+
 CORS_ORIGIN_WHITELIST = (
     'localhost:3000',
     os.environ.get('CLIENT_APP_URL', '')
