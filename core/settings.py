@@ -67,11 +67,8 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_WHITELIST = (
     'localhost:3000',
+    os.environ.get('CLIENT_APP_URL', '')
 )
-
-CLIENT_APP_URL = os.environ.get('CLIENT_APP_URL', False)
-if CLIENT_APP_URL:
-    CORS_ORIGIN_WHITELIST.append(CLIENT_APP_URL)
 
 ROOT_URLCONF = 'core.urls'
 
