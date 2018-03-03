@@ -1,6 +1,5 @@
 *.db
 *.pyc
 *~
-.env
 test-results
 db/.postgres-data
